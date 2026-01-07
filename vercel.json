@@ -1,0 +1,10 @@
+{
+  "buildCommand": "cd application-portal && npm run build",
+  "outputDirectory": "application-portal/dist",
+  "installCommand": "cd application-portal && npm install",
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
+
