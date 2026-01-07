@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Application Portal</title>
+
+<style>
+:root{
+  --primary:#2563eb;
+  --bg:#f1f5f9;
+  --card:#ffffff;
+  --border:#e5e7eb;
+  --text:#0f172a;
+  --muted:#64748b;
+  --success:#16a34a;
+  --danger:#dc2626;
+  --warning:#f59e0b;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,system-ui,Arial;
+  background:var(--bg);
+  color:var(--text);
+}
+
+.hidden{display:none}
+.container{max-width:1200px;margin:auto;padding:40px 20px}
+.card{
+  background:var(--card);
+  border-radius:14px;
+  padding:24px;
+  box-shadow:0 10px 25px rgba(0,0,0,.05);
+  margin-bottom:20px;
+}
+
+h1,h2,h3{margin-top:0}
+label{font-size:13px;color:var(--muted)}
+
+input,select,textarea{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  margin-bottom:12px;
+}
+
+textarea{resize:vertical}
+
+button{
+  padding:10px 14px;
+  border-radius:8px;
+  border:none;
+  cursor:pointer;
+  font-weight:500;
+}
+
+.primary{background:var(--primary);color:#fff}
+.success{background:var(--success);color:#fff}
+.danger{background:var(--danger);color:#fff}
+.secondary{background:#475569;color:#fff}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:#fff;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+th,td{
+  padding:14px;
+  border-bottom:1px solid var(--border);
+}
+
+th{background:#f8fafc;font-size:13px;color:var(--muted)}
+
+.status{
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
+}
+.Pending{background:#fef3c7;color:#92400e}
+.Approved{background:#dcfce7;color:#166534}
+.Rejected{background:#fee2e2;color:#991b1b}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+
+.auth{
+  max-width:420px;
+  margin:80px auto;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<section id="login" class="auth card">
+  <h2>Welcome Back</h2>
+  <label>Email</label>
+  <input id="loginEmail" type="email">
+  <label>Password</label>
+  <input id="loginPassword" type="password">
+  <button class="primary" onclick="login()">Login</button>
+  <p>New user? <a href="#" onclick="show('signup')">Signup</a></p>
+</section>
+
+<!-- SIGNUP -->
+<section id="signup" class="auth card hidden">
+  <h2>Create Account</h2>
+  <input id="firstName" placeholder="First Name">
+  <input id="lastName" placeholder="Last Name">
+  <input id="signupEmail" type="email" placeholder="Email">
+  <input id="signupPassword" type="password" placeholder="Password (min 6)">
+  <button class="primary" onclick="signup()">Create Account</button>
+  <button class="secondary" onclick="show('login')">Back</button>
+</section>
+
+<!-- USER -->
+<section id="user" class="container hidden">
+  <div class="header">
+    <h2>User Dashboard</h2>
+    <button class="secondary" onclick="logout()">Logout</button>
+  </div>
+
+  <button class="primary" onclick="openForm()">+ New Application</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="userApps"></tbody>
+  </table>
+
+  <!-- FORM -->
+  <div id="form" class="card hidden">
+    <h3>Application Form</h3>
+
+    <div class="grid">
+      <div>
+        <label>Title *</label>
+        <input id="appTitle">
+
+        <label>Email *</label>
+        <input id="appEmail" type="email">
+
+        <label>Password</label>
+        <input id="appPassword" type="password">
+
+        <label>Phone</label>
+        <input id="appTel" type="tel">
+
+        <label>Website</label>
+        <input id="appUrl" type="url">
+
+        <label>Number</label>
+        <input id="appNumber" type="number">
+
+        <label>Range</label>
+        <input id="appRange" type="range">
+      </div>
+
+      <div>
+        <label>Date</label>
+        <input id="appDate" type="date">
+
+        <label>Time</label>
+        <input id="appTime" type="time">
+
+        <label>Date & Time</label>
+        <input id="appDateTime" type="datetime-local">
+
+        <label>Color</label>
+        <input id="appColor" type="color">
+
+        <label>File</label>
+        <input id="appFile" type="file">
+
+        <label>Category</label>
+        <select id="appSelect">
+          <option>A</option>
+          <option>B</option>
+        </select>
+
+        <label>
+          <input id="appCheckbox" type="checkbox"> Accept Terms
+        </label>
+      </div>
+    </div>
+
+    <label>Description</label>
+    <textarea id="appDescription"></textarea>
+
+    <button class="primary" onclick="submitApp()">Save</button>
+    <button class="secondary" onclick="closeForm()">Cancel</button>
+  </div>
+
+  <!-- DETAILS -->
+  <div id="details" class="card hidden">
+    <h3>Application Details</h3>
+    <div id="detailsContent"></div>
+    <button class="secondary" onclick="closeDetails()">Close</button>
+  </div>
+</section>
+
+<!-- ADMIN -->
+<section id="admin" class="container hidden">
+  <div class="header">
+    <h2>Admin Dashboard</h2>
+    <button class="secondary" onclick="logout()">Logout</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Title</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="adminApps"></tbody>
+  </table>
+</section>
+
+<script>
+const ADMIN_EMAIL="admin@example.com";
+const ADMIN_PASS="1234567890";
+let editId=null;
+
+function show(id){
+  document.querySelectorAll("section").forEach(s=>s.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
+
+function signup(){
+  if(signupPassword.value.length<6) return alert("Password too short");
+  const users=JSON.parse(localStorage.getItem("users")||"[]");
+  users.push({email:signupEmail.value,password:signupPassword.value});
+  localStorage.setItem("users",JSON.stringify(users));
+  show("login");
+}
+
+function login(){
+  if(loginEmail.value===ADMIN_EMAIL && loginPassword.value===ADMIN_PASS){
+    show("admin");loadAdmin();return;
+  }
+  const users=JSON.parse(localStorage.getItem("users")||"[]");
+  const user=users.find(u=>u.email===loginEmail.value&&u.password===loginPassword.value);
+  if(!user) return alert("Invalid login");
+  localStorage.setItem("currentUser",JSON.stringify(user));
+  show("user");loadUser();
+}
+
+function logout(){localStorage.clear();show("login")}
+
+function openForm(app=null){
+  form.classList.remove("hidden");
+  details.classList.add("hidden");
+  editId=app?.id||null;
+  appTitle.value=app?.title||"";
+  appEmail.value=app?.email||"";
+}
+
+function closeForm(){form.classList.add("hidden")}
+
+function submitApp(){
+  if(!appTitle.value||!appEmail.value) return alert("Required fields");
+  let apps=JSON.parse(localStorage.getItem("apps")||"[]");
+  const user=JSON.parse(localStorage.getItem("currentUser"));
+  if(editId){
+    Object.assign(apps.find(a=>a.id===editId),{title:appTitle.value,email:appEmail.value});
+  }else{
+    apps.push({id:Date.now(),user:user.email,title:appTitle.value,email:appEmail.value,status:"Pending"});
+  }
+  localStorage.setItem("apps",JSON.stringify(apps));
+  closeForm();loadUser();
+}
+
+function loadUser(){
+  const user=JSON.parse(localStorage.getItem("currentUser"));
+  const apps=JSON.parse(localStorage.getItem("apps")||"[]");
+  userApps.innerHTML="";
+  apps.filter(a=>a.user===user.email).forEach(a=>{
+    userApps.innerHTML+=`
+    <tr>
+      <td>${a.title}</td>
+      <td>${a.email}</td>
+      <td><span class="status ${a.status}">${a.status}</span></td>
+      <td>
+        <button onclick='showDetails(${JSON.stringify(a)})'>Details</button>
+        <button onclick='openForm(${JSON.stringify(a)})'>Edit</button>
+        <button class="danger" onclick='deleteApp(${a.id})'>Delete</button>
+      </td>
+    </tr>`;
+  });
+}
+
+function showDetails(app){
+  details.classList.remove("hidden");
+  detailsContent.innerHTML=`
+    <p><b>Title:</b> ${app.title}</p>
+    <p><b>Email:</b> ${app.email}</p>
+    <p><b>Status:</b> ${app.status}</p>`;
+}
+
+function closeDetails(){details.classList.add("hidden")}
+
+function loadAdmin(){
+  const apps=JSON.parse(localStorage.getItem("apps")||"[]");
+  adminApps.innerHTML="";
+  apps.forEach(a=>{
+    adminApps.innerHTML+=`
+    <tr>
+      <td>${a.user}</td>
+      <td>${a.title}</td>
+      <td>${a.email}</td>
+      <td><span class="status ${a.status}">${a.status}</span></td>
+      <td>
+        <button class="success" onclick="setStatus(${a.id},'Approved')">Approve</button>
+        <button class="danger" onclick="setStatus(${a.id},'Rejected')">Reject</button>
+      </td>
+    </tr>`;
+  });
+}
+
+function setStatus(id,status){
+  const apps=JSON.parse(localStorage.getItem("apps"));
+  apps.find(a=>a.id===id).status=status;
+  localStorage.setItem("apps",JSON.stringify(apps));
+  loadAdmin();
+}
+
+function deleteApp(id){
+  let apps=JSON.parse(localStorage.getItem("apps"));
+  apps=apps.filter(a=>a.id!==id);
+  localStorage.setItem("apps",JSON.stringify(apps));
+  loadUser();
+}
+
+show("login");
+</script>
+
+</body>
+</html>
