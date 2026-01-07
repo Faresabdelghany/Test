@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { Input } from '../shared';
-import { Button } from '../shared';
+import { Input, Button, ThemeToggle } from '../shared';
+import './Auth.css';
 
 export function Signup() {
   const [firstName, setFirstName] = useState('');
@@ -32,49 +32,68 @@ export function Signup() {
   };
 
   return (
-    <section className="auth card" data-testid="signup-section">
-      <h2>Create Account</h2>
-      <form onSubmit={handleSubmit}>
-        <Input
-          placeholder="First Name"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          testId="signup-firstname"
-        />
-        <Input
-          placeholder="Last Name"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          testId="signup-lastname"
-        />
-        <Input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          testId="signup-email"
-        />
-        <Input
-          type="password"
-          placeholder="Password (min 6)"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          error={error}
-          testId="signup-password"
-        />
-        <div className="btn-group">
-          <Button type="submit" variant="primary" testId="signup-submit">
-            Create Account
-          </Button>
-          <Button
-            variant="secondary"
-            onClick={() => navigate('/login')}
-            testId="signup-back"
-          >
-            Back
-          </Button>
+    <div className="auth-wrapper">
+      <div className="auth-theme-toggle">
+        <ThemeToggle />
+      </div>
+      <section className="auth card" data-testid="signup-section">
+        <div className="auth-header">
+          <h2>Create Account</h2>
+          <p className="auth-subtitle">Join us and start your journey</p>
         </div>
-      </form>
-    </section>
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="form-row">
+            <Input
+              label="First Name"
+              placeholder="John"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              testId="signup-firstname"
+            />
+            <Input
+              label="Last Name"
+              placeholder="Doe"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              testId="signup-lastname"
+            />
+          </div>
+          <Input
+            label="Email"
+            type="email"
+            placeholder="your.email@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            testId="signup-email"
+          />
+          <Input
+            label="Password"
+            type="password"
+            placeholder="Minimum 6 characters"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            error={error}
+            testId="signup-password"
+          />
+          <div className="btn-group">
+            <Button type="submit" variant="primary" testId="signup-submit" className="auth-submit">
+              Create Account
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => navigate('/login')}
+              testId="signup-back"
+            >
+              Back to Login
+            </Button>
+          </div>
+        </form>
+        <div className="auth-footer">
+          <p>
+            Already have an account? <Link to="/login">Sign in</Link>
+          </p>
+        </div>
+      </section>
+    </div>
   );
 }

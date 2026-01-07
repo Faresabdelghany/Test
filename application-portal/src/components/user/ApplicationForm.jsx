@@ -99,11 +99,16 @@ export function ApplicationForm({ application, onSubmit, onCancel }) {
   };
 
   return (
-    <div className="card" data-testid="application-form">
-      <h3>{application ? 'Edit Application' : 'New Application'}</h3>
-      <form onSubmit={handleSubmit}>
-        <div className="grid">
-          <div>
+    <div className="card application-form-card" data-testid="application-form">
+      <div className="form-header">
+        <h3>{application ? 'Edit Application' : 'New Application'}</h3>
+        <p className="form-subtitle">
+          {application ? 'Update your application details' : 'Fill in the details below to create a new application'}
+        </p>
+      </div>
+      <form onSubmit={handleSubmit} className="application-form">
+        <div className="form-grid">
+          <div className="form-column">
             <Input
               label="Title"
               value={formData.title}
@@ -111,6 +116,7 @@ export function ApplicationForm({ application, onSubmit, onCancel }) {
               error={errors.title}
               testId="app-title"
               required
+              placeholder="Enter application title"
             />
             <Input
               label="Email"
@@ -120,6 +126,7 @@ export function ApplicationForm({ application, onSubmit, onCancel }) {
               error={errors.email}
               testId="app-email"
               required
+              placeholder="your.email@example.com"
             />
             <Input
               label="Password"
@@ -127,6 +134,7 @@ export function ApplicationForm({ application, onSubmit, onCancel }) {
               value={formData.password}
               onChange={handleChange('password')}
               testId="app-password"
+              placeholder="Optional password"
             />
             <Input
               label="Phone"
@@ -134,6 +142,7 @@ export function ApplicationForm({ application, onSubmit, onCancel }) {
               value={formData.phone}
               onChange={handleChange('phone')}
               testId="app-phone"
+              placeholder="+1 (555) 000-0000"
             />
             <Input
               label="Website"
@@ -141,6 +150,7 @@ export function ApplicationForm({ application, onSubmit, onCancel }) {
               value={formData.website}
               onChange={handleChange('website')}
               testId="app-website"
+              placeholder="https://example.com"
             />
             <Input
               label="Number"
@@ -148,19 +158,31 @@ export function ApplicationForm({ application, onSubmit, onCancel }) {
               value={formData.number}
               onChange={handleChange('number')}
               testId="app-number"
+              placeholder="0"
             />
-            <div className="form-group">
-              <label>Range</label>
-              <input
-                type="range"
-                value={formData.range}
-                onChange={handleChange('range')}
-                data-testid="app-range"
-              />
+            <div className="form-group range-group">
+              <label>
+                Range: <span className="range-value">{formData.range}</span>
+              </label>
+              <div className="range-container">
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={formData.range}
+                  onChange={handleChange('range')}
+                  data-testid="app-range"
+                  className="range-input"
+                />
+                <div className="range-labels">
+                  <span>0</span>
+                  <span>100</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div>
+          <div className="form-column">
             <Input
               label="Date"
               type="date"
@@ -182,33 +204,43 @@ export function ApplicationForm({ application, onSubmit, onCancel }) {
               onChange={handleChange('datetime')}
               testId="app-datetime"
             />
-            <div className="form-group">
+            <div className="form-group color-group">
               <label>Color</label>
-              <input
-                type="color"
-                value={formData.color}
-                onChange={handleChange('color')}
-                data-testid="app-color"
-              />
+              <div className="color-input-wrapper">
+                <input
+                  type="color"
+                  value={formData.color}
+                  onChange={handleChange('color')}
+                  data-testid="app-color"
+                  className="color-input"
+                />
+                <span className="color-value">{formData.color}</span>
+              </div>
             </div>
-            <div className="form-group">
+            <div className="form-group file-group">
               <label>File</label>
-              <input
-                type="file"
-                onChange={handleFileChange}
-                data-testid="app-file"
-              />
-              {existingFileUrl && !formData.file && (
-                <p className="file-info">
-                  Current file:{' '}
-                  <a href={existingFileUrl} target="_blank" rel="noopener noreferrer">
-                    View file
-                  </a>
-                </p>
-              )}
-              {formData.file && (
-                <p className="file-info">New file: {formData.file.name}</p>
-              )}
+              <div className="file-input-wrapper">
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  data-testid="app-file"
+                  className="file-input"
+                />
+                {existingFileUrl && !formData.file && (
+                  <div className="file-info">
+                    <span className="file-label">Current file:</span>
+                    <a href={existingFileUrl} target="_blank" rel="noopener noreferrer" className="file-link">
+                      View file
+                    </a>
+                  </div>
+                )}
+                {formData.file && (
+                  <div className="file-info">
+                    <span className="file-label">New file:</span>
+                    <span className="file-name">{formData.file.name}</span>
+                  </div>
+                )}
+              </div>
             </div>
             <div className="form-group">
               <label>Category</label>
@@ -216,37 +248,41 @@ export function ApplicationForm({ application, onSubmit, onCancel }) {
                 value={formData.category}
                 onChange={handleChange('category')}
                 data-testid="app-category"
+                className="select-input"
               >
-                <option value="A">A</option>
-                <option value="B">B</option>
+                <option value="A">Category A</option>
+                <option value="B">Category B</option>
               </select>
             </div>
-            <div className="form-group">
-              <label>
+            <div className="form-group checkbox-group">
+              <label className="checkbox-label">
                 <input
                   type="checkbox"
                   checked={formData.termsAccepted}
                   onChange={handleChange('termsAccepted')}
                   data-testid="app-checkbox"
-                />{' '}
-                Accept Terms
+                  className="checkbox-input"
+                />
+                <span className="checkbox-text">Accept Terms and Conditions</span>
               </label>
             </div>
           </div>
         </div>
 
-        <div className="form-group">
+        <div className="form-group description-group">
           <label>Description</label>
           <textarea
             value={formData.description}
             onChange={handleChange('description')}
             data-testid="app-description"
+            placeholder="Enter a detailed description..."
+            className="description-textarea"
           />
         </div>
 
-        <div className="btn-group">
-          <Button type="submit" variant="primary" testId="app-submit">
-            Save
+        <div className="btn-group form-actions">
+          <Button type="submit" variant="primary" testId="app-submit" className="submit-button">
+            {application ? 'Update Application' : 'Create Application'}
           </Button>
           <Button variant="secondary" onClick={onCancel} testId="app-cancel">
             Cancel

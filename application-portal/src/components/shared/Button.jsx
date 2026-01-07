@@ -5,18 +5,19 @@ export function Button({
   onClick,
   disabled,
   testId,
+  className = '',
   ...props
 }) {
   return (
     <button
       type={type}
-      className={variant}
+      className={`${variant} ${className}`.trim()}
       onClick={onClick}
       disabled={disabled}
       data-testid={testId}
       {...props}
     >
-      {children}
+      <span className="button-content">{children}</span>
     </button>
   );
 }

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { Input } from '../shared';
-import { Button } from '../shared';
+import { Input, Button, ThemeToggle } from '../shared';
+import './Auth.css';
 
 export function Login() {
   const [email, setEmail] = useState('');
@@ -24,31 +24,43 @@ export function Login() {
   };
 
   return (
-    <section className="auth card" data-testid="login-section">
-      <h2>Welcome Back</h2>
-      <form onSubmit={handleSubmit}>
-        <Input
-          label="Email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          testId="login-email"
-        />
-        <Input
-          label="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          error={error}
-          testId="login-password"
-        />
-        <Button type="submit" variant="primary" testId="login-submit">
-          Login
-        </Button>
-      </form>
-      <p>
-        New user? <Link to="/signup">Signup</Link>
-      </p>
-    </section>
+    <div className="auth-wrapper">
+      <div className="auth-theme-toggle">
+        <ThemeToggle />
+      </div>
+      <section className="auth card" data-testid="login-section">
+        <div className="auth-header">
+          <h2>Welcome Back</h2>
+          <p className="auth-subtitle">Sign in to continue to your portal</p>
+        </div>
+        <form onSubmit={handleSubmit} className="auth-form">
+          <Input
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            testId="login-email"
+            placeholder="your.email@example.com"
+          />
+          <Input
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            error={error}
+            testId="login-password"
+            placeholder="Enter your password"
+          />
+          <Button type="submit" variant="primary" testId="login-submit" className="auth-submit">
+            Sign In
+          </Button>
+        </form>
+        <div className="auth-footer">
+          <p>
+            New user? <Link to="/signup">Create an account</Link>
+          </p>
+        </div>
+      </section>
+    </div>
   );
 }
