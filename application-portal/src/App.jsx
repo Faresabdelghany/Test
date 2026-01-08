@@ -1,12 +1,13 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Login, Signup } from './components/auth';
 import { UserDashboard, ApplicationsPage } from './components/user';
-import { AdminDashboard } from './components/admin';
+import { AdminDashboard, AdminApplicationsPage } from './components/admin';
 import { Layout } from './components/shared';
 import { useAuth } from './hooks/useAuth';
 import { SearchProvider } from './context/SearchContext';
 
-function ProtectedRoute({ children }) {
+// Route for regular users only (redirects admins to admin dashboard)
+function UserRoute({ children }) {
   const { user, isAdmin } = useAuth();
 
   if (!user) {
@@ -20,6 +21,7 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
+// Route for admin users only (redirects non-admins to user dashboard)
 function AdminRoute({ children }) {
   const { user, isAdmin } = useAuth();
 
@@ -34,13 +36,13 @@ function AdminRoute({ children }) {
   return children;
 }
 
-function ProtectedLayout({ children }) {
+function UserLayout({ children }) {
   return (
-    <ProtectedRoute>
+    <UserRoute>
       <SearchProvider>
         <Layout>{children}</Layout>
       </SearchProvider>
-    </ProtectedRoute>
+    </UserRoute>
   );
 }
 
@@ -60,27 +62,39 @@ function App() {
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+
+      {/* User routes */}
       <Route
         path="/dashboard"
         element={
-          <ProtectedLayout>
+          <UserLayout>
             <UserDashboard />
-          </ProtectedLayout>
+          </UserLayout>
         }
       />
       <Route
         path="/applications"
         element={
-          <ProtectedLayout>
+          <UserLayout>
             <ApplicationsPage />
-          </ProtectedLayout>
+          </UserLayout>
         }
       />
+
+      {/* Admin routes */}
       <Route
         path="/admin"
         element={
           <AdminLayout>
             <AdminDashboard />
+          </AdminLayout>
+        }
+      />
+      <Route
+        path="/admin/applications"
+        element={
+          <AdminLayout>
+            <AdminApplicationsPage />
           </AdminLayout>
         }
       />

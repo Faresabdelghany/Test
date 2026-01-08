@@ -89,7 +89,7 @@ export function Sidebar({ onNewApplication }) {
             </NavLink>
 
             <NavLink
-              to="/applications"
+              to={isAdmin ? "/admin/applications" : "/applications"}
               className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
               data-testid="sidebar-applications"
             >
