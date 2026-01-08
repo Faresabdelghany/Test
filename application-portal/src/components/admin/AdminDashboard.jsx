@@ -67,15 +67,16 @@ export function AdminDashboard() {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        minHeight: '60vh',
-        padding: '2rem'
+        flex: 1,
+        height: 'calc(100vh - 200px)',
+        maxHeight: 'calc(100vh - 200px)'
       }}>
         <img
           src="/dashboard-character.png"
           alt="Testing System - Dashboard Placeholder"
           style={{
             maxWidth: '100%',
-            maxHeight: '800px',
+            maxHeight: '100%',
             objectFit: 'contain'
           }}
         />

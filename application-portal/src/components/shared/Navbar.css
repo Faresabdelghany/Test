@@ -19,10 +19,19 @@
   flex: 1;
 }
 
+.navbar-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 2;
+}
+
 .navbar-right {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: var(--space-sm);
+  flex: 1;
 }
 
 /* Navigation Arrows */
@@ -58,7 +67,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  max-width: 280px;
+  max-width: 400px;
   width: 100%;
 }
 
@@ -244,6 +253,15 @@
     padding: 0 var(--space-md);
   }
 
+  .navbar-left {
+    display: none;
+  }
+
+  .navbar-center {
+    flex: 1;
+    justify-content: flex-start;
+  }
+
   .search-shortcut {
     display: none;
   }
@@ -253,7 +271,7 @@
   }
 
   .search-container {
-    max-width: 160px;
+    max-width: 200px;
   }
 
   .nav-arrows {

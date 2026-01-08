@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { ThemeToggle } from './ThemeToggle';
 import './Sidebar.css';
 
 // SVG Icons
@@ -112,14 +111,6 @@ export function Sidebar({ onNewApplication }) {
           </button>
         )}
       </nav>
-
-      {/* Footer */}
-      <div className="sidebar-footer">
-        <div className="sidebar-section-label">My Account</div>
-        <div className="sidebar-footer-item">
-          <ThemeToggle />
-        </div>
-      </div>
     </aside>
   );
 }
