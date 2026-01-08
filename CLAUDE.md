@@ -38,7 +38,12 @@ ThemeContext  → useTheme hook → Components (light/dark mode)
 
 **Application Status**: Three states defined in `src/constants/index.js` - `Pending`, `Approved`, `Rejected`. Users can CRUD their own applications; admins can view all and change status. RLS policies enforce this at database level.
 
-**Route Protection**: `App.jsx` defines `ProtectedRoute` (redirects to admin if user is admin) and `AdminRoute` (requires admin). Routes: `/login`, `/signup`, `/dashboard` (users), `/admin` (admins).
+**Route Protection**: `App.jsx` defines `UserRoute` (redirects admins to `/admin`) and `AdminRoute` (redirects non-admins to `/dashboard`). Both wrap content in `Layout` with `SearchProvider`.
+
+**Routes:**
+- `/login`, `/signup` - Auth pages (public)
+- `/dashboard`, `/applications` - User pages (wrapped in `UserLayout`)
+- `/admin`, `/admin/applications` - Admin pages (wrapped in `AdminLayout`)
 
 **Theme System**: `ThemeContext` manages light/dark mode via `data-theme` attribute on document root. Persisted in localStorage.
 
@@ -46,12 +51,14 @@ ThemeContext  → useTheme hook → Components (light/dark mode)
 - `auth/` - Login, Signup with shared Auth.css
 - `user/` - UserDashboard, ApplicationForm, ApplicationDetails with Dashboard.css
 - `admin/` - AdminDashboard
-- `shared/` - Button, Input, StatusBadge, ThemeToggle (reusable primitives)
+- `shared/` - Layout, Navbar, Sidebar, Button, Input, StatusBadge, ThemeToggle, Toast, ConfirmDialog
 
-### Hooks
+### Hooks & Context
 - `useAuth()` - Returns `{ user, profile, isAdmin, loading, login, logout, signup }`
 - `useApplications()` - Returns `{ applications, loading, error, createApplication, updateApplication, deleteApplication, setStatus, refresh }`
 - `useTheme()` - Returns `{ theme, toggleTheme, isDark }`
+- `SearchContext` - Global search state shared across dashboard pages
+- `ToastContext` - Toast notifications system
 
 ### Supabase Schema
 

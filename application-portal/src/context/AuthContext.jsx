@@ -11,15 +11,20 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     let mounted = true;
 
-    // Check current session on mount
+    // Check current session on mount - use getSession() for fast local check
     const initAuth = async () => {
       try {
-        const currentUser = await storage.getCurrentUser();
-        if (currentUser && mounted) {
-          setUser(currentUser);
-          const userProfile = await storage.getProfile(currentUser.id);
-          if (mounted) {
-            setProfile(userProfile);
+        const session = await storage.getCurrentSession();
+        if (session?.user && mounted) {
+          setUser(session.user);
+          try {
+            const userProfile = await storage.getProfile(session.user.id);
+            if (mounted) {
+              setProfile(userProfile);
+            }
+          } catch (profileError) {
+            // Profile fetch failed, but user is still authenticated
+            console.error('Failed to fetch profile:', profileError);
           }
         }
       } catch (error) {
@@ -80,12 +85,16 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
+    // Clear local state first for immediate UI feedback
+    setUser(null);
+    setProfile(null);
+
     try {
       await storage.signOut();
-      setUser(null);
-      setProfile(null);
     } catch (error) {
       console.error('Logout error:', error);
+      // Even if signOut fails, we've already cleared local state
+      // so user will be redirected to login
     }
   };
 
@@ -119,9 +128,36 @@ export function AuthProvider({ children }) {
     signup,
   };
 
+  // Show loading spinner while auth is initializing
+  if (loading) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        backgroundColor: 'var(--bg-primary, #f5f5f5)'
+      }}>
+        <div style={{
+          width: '40px',
+          height: '40px',
+          border: '3px solid var(--border-color, #e0e0e0)',
+          borderTopColor: 'var(--accent-color, #6366f1)',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite'
+        }} />
+        <style>{`
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+        `}</style>
+      </div>
+    );
+  }
+
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 }
