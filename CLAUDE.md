@@ -15,6 +15,10 @@ npm install
 npm run dev      # Start dev server at localhost:5173
 npm run build    # Production build
 npm run preview  # Preview production build
+
+# From root directory (Vercel deployment uses these)
+npm run install  # Runs npm install in application-portal
+npm run build    # Runs npm run build in application-portal
 ```
 
 ## Architecture
@@ -23,6 +27,7 @@ npm run preview  # Preview production build
 ```
 Supabase Auth → AuthContext → useAuth hook → Components
 Supabase DB   → storage.js  → useApplications hook → Components
+ThemeContext  → useTheme hook → Components (light/dark mode)
 ```
 
 ### Key Patterns
@@ -31,19 +36,30 @@ Supabase DB   → storage.js  → useApplications hook → Components
 
 **Auth Flow**: `AuthContext` wraps `storage.js` auth methods. Listens to `onAuthStateChange` for session sync. Admin detection via `is_admin` boolean in `profiles` table (not email matching).
 
-**Application Status**: Three states - `Pending`, `Approved`, `Rejected`. Users can CRUD their own applications; admins can view all and change status. RLS policies enforce this at database level.
+**Application Status**: Three states defined in `src/constants/index.js` - `Pending`, `Approved`, `Rejected`. Users can CRUD their own applications; admins can view all and change status. RLS policies enforce this at database level.
+
+**Route Protection**: `App.jsx` defines `ProtectedRoute` (redirects to admin if user is admin) and `AdminRoute` (requires admin). Routes: `/login`, `/signup`, `/dashboard` (users), `/admin` (admins).
+
+**Theme System**: `ThemeContext` manages light/dark mode via `data-theme` attribute on document root. Persisted in localStorage.
 
 ### Component Organization
-- `auth/` - Login, Signup
-- `user/` - UserDashboard, ApplicationForm, ApplicationDetails
+- `auth/` - Login, Signup with shared Auth.css
+- `user/` - UserDashboard, ApplicationForm, ApplicationDetails with Dashboard.css
 - `admin/` - AdminDashboard
-- `shared/` - Button, Input, StatusBadge (reusable primitives)
+- `shared/` - Button, Input, StatusBadge, ThemeToggle (reusable primitives)
+
+### Hooks
+- `useAuth()` - Returns `{ user, profile, isAdmin, loading, login, logout, signup }`
+- `useApplications()` - Returns `{ applications, loading, error, createApplication, updateApplication, deleteApplication, setStatus, refresh }`
+- `useTheme()` - Returns `{ theme, toggleTheme, isDark }`
 
 ### Supabase Schema
 
 **Tables:**
 - `profiles` - extends auth.users with `first_name`, `last_name`, `is_admin`
 - `applications` - user applications with all form fields and status
+
+**Storage Bucket:** `application-files` - files uploaded with applications
 
 **Key RLS patterns:**
 - Users: `auth.uid() = user_id` for own data
@@ -55,7 +71,7 @@ Supabase DB   → storage.js  → useApplications hook → Components
 
 ### Environment Variables
 
-Required in `.env`:
+Required in `application-portal/.env`:
 ```
 VITE_SUPABASE_URL=your_project_url
 VITE_SUPABASE_ANON_KEY=your_anon_key
@@ -65,9 +81,13 @@ VITE_SUPABASE_ANON_KEY=your_anon_key
 
 All interactive elements have `data-testid` attributes. Pattern: `{context}-{element}-{id}` (e.g., `app-edit-btn-123`, `admin-app-row-456`).
 
+## Deployment
+
+Deployed to Vercel. Root `vercel.json` configures build to output to `application-portal/dist` with SPA rewrites.
+
 ## Supabase Operations
 
-Use Supabase MCP tools for schema operations. Reference `supabase-integration-prompt.md` for full migration guide including database schema, RLS policies, and triggers.
+Use Supabase MCP tools for schema operations.
 
 To create an admin user:
 ```sql

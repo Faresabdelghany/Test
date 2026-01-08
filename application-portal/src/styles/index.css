@@ -1,27 +1,39 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
-/* Light Theme (Default) */
+/* Light Theme (Default) - Brainwave Glassy Style */
 :root {
   /* Typography */
-  --font-display: 'Playfair Display', serif;
-  --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  
-  /* Color Palette - Light Theme */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --bg-tertiary: #f1f5f9;
+  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Color Palette - Light Theme (Brainwave Glassy) */
+  --bg-page: #e8e8e8;
+  --bg-primary: #f4f4f4;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f8f8f8;
   --card-bg: #ffffff;
-  --card-border: #e2e8f0;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  
-  /* Accent Colors - Refined Blue */
-  --accent-primary: #2563eb;
-  --accent-secondary: #3b82f6;
-  --accent-tertiary: #60a5fa;
-  --accent-hover: #1d4ed8;
-  
+  --card-border: rgba(0, 0, 0, 0.06);
+
+  /* Glassy effect colors */
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --sidebar-bg: rgba(255, 255, 255, 0.9);
+
+  /* Text hierarchy */
+  --text-primary: #1a1a1a;
+  --text-secondary: #6b6b6b;
+  --text-muted: #9a9a9a;
+
+  /* Accent Colors - Orange */
+  --accent-primary: #e8855b;
+  --accent-secondary: #f5945c;
+  --accent-tertiary: #ffab7a;
+  --accent-hover: #d4724a;
+
+  /* Hover/Active states */
+  --hover-bg: rgba(0, 0, 0, 0.04);
+  --active-bg: rgba(0, 0, 0, 0.06);
+
   /* Status Colors */
   --success: #10b981;
   --success-bg: #d1fae5;
@@ -35,66 +47,97 @@
   --pending: #f59e0b;
   --pending-bg: #fef3c7;
   --pending-text: #92400e;
-  
+
+  /* Layout dimensions */
+  --sidebar-width: 240px;
+  --navbar-height: 56px;
+  --content-padding: 24px;
+  --app-border-radius: 20px;
+  --app-margin: 16px;
+
   /* Spacing */
-  --space-xs: 0.5rem;
-  --space-sm: 1rem;
-  --space-md: 1.5rem;
-  --space-lg: 2rem;
-  --space-xl: 3rem;
-  --space-2xl: 4rem;
-  
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 0.75rem;
+  --space-lg: 1rem;
+  --space-xl: 1.5rem;
+  --space-2xl: 2rem;
+
   /* Border Radius */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
-  
-  /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 24px rgba(0, 0, 0, 0.12);
-  --shadow-glow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-  
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* Input specific colors */
+  --input-bg: var(--bg-secondary);
+  --input-border: var(--card-border);
+  --input-focus-border: var(--accent-primary);
+
+  /* Shadows - Softer for glassy */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.08);
+  --shadow-glow: 0 0 0 3px rgba(232, 133, 91, 0.1);
+
   /* Transitions */
   --transition-fast: 150ms ease;
   --transition-base: 200ms ease;
   --transition-slow: 300ms ease;
 }
 
-/* Dark Theme */
+/* Dark Theme - Charcoal/Orange Glassy Theme */
 [data-theme="dark"] {
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
-  --bg-tertiary: #334155;
-  --card-bg: #1e293b;
-  --card-border: #334155;
-  --text-primary: #f1f5f9;
-  --text-secondary: #cbd5e1;
-  --text-muted: #64748b;
-  
-  --accent-primary: #3b82f6;
-  --accent-secondary: #60a5fa;
-  --accent-tertiary: #93c5fd;
-  --accent-hover: #2563eb;
-  
-  --success: #10b981;
-  --success-bg: rgba(16, 185, 129, 0.2);
-  --success-text: #34d399;
+  --bg-page: #0a0a0a;
+  --bg-primary: #141414;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #222222;
+  --card-bg: rgba(30, 30, 30, 0.9);
+  --card-border: rgba(255, 255, 255, 0.08);
+
+  /* Glassy effect colors - dark */
+  --glass-bg: rgba(20, 20, 20, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --sidebar-bg: rgba(20, 20, 20, 0.9);
+
+  --text-primary: #ffffff;
+  --text-secondary: #888888;
+  --text-muted: #666666;
+
+  /* Hover/Active states */
+  --hover-bg: rgba(255, 255, 255, 0.05);
+  --active-bg: rgba(255, 255, 255, 0.08);
+
+  /* Orange Accent Colors */
+  --accent-primary: #e8855b;
+  --accent-secondary: #f5945c;
+  --accent-tertiary: #ffab7a;
+  --accent-hover: #d4724a;
+
+  /* Input specific colors */
+  --input-bg: rgba(40, 40, 40, 0.8);
+  --input-border: rgba(255, 255, 255, 0.1);
+  --input-focus-border: #e8855b;
+
+  --success: #22c55e;
+  --success-bg: rgba(34, 197, 94, 0.15);
+  --success-text: #4ade80;
   --danger: #ef4444;
-  --danger-bg: rgba(239, 68, 68, 0.2);
+  --danger-bg: rgba(239, 68, 68, 0.15);
   --danger-text: #f87171;
   --warning: #f59e0b;
-  --warning-bg: rgba(245, 158, 11, 0.2);
+  --warning-bg: rgba(245, 158, 11, 0.15);
   --warning-text: #fbbf24;
   --pending: #f59e0b;
-  --pending-bg: rgba(245, 158, 11, 0.2);
+  --pending-bg: rgba(245, 158, 11, 0.15);
   --pending-text: #fbbf24;
-  
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 24px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 10px 24px rgba(0, 0, 0, 0.7);
+  --shadow-glow: 0 0 0 3px rgba(232, 133, 91, 0.3);
 }
 
 * {
@@ -110,7 +153,7 @@ html {
 body {
   margin: 0;
   font-family: var(--font-body);
-  background: var(--bg-primary);
+  background: var(--bg-page);
   color: var(--text-primary);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -120,26 +163,7 @@ body {
   transition: background-color var(--transition-base), color var(--transition-base);
 }
 
-/* Subtle Background Pattern */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: 
-    radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.03) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.02) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: -1;
-}
-
-[data-theme="dark"] body::before {
-  background: 
-    radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(37, 99, 235, 0.03) 0%, transparent 50%);
-}
+/* Clean background - no pattern for Brainwave style */
 
 .hidden {
   display: none;
@@ -156,25 +180,25 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 700;
 }
 
 h2 {
-  font-size: clamp(2rem, 4vw, 3rem);
-  margin-bottom: var(--space-md);
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  margin-bottom: var(--space-sm);
 }
 
 h3 {
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  margin-bottom: var(--space-sm);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  margin-bottom: var(--space-xs);
 }
 
 /* Container */
 .container {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: var(--space-xl) var(--space-lg);
+  padding: var(--space-lg) var(--space-md);
   min-height: calc(100vh - 2rem);
 }
 
@@ -183,9 +207,9 @@ h3 {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
-  padding: var(--space-xl);
+  padding: var(--space-lg);
   box-shadow: var(--shadow-md);
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-md);
   transition: all var(--transition-base);
 }
 
@@ -196,14 +220,13 @@ h3 {
 
 /* Form Elements */
 label {
-  font-size: 0.875rem;
   color: var(--text-secondary);
   display: block;
-  margin-bottom: var(--space-xs);
+  margin-bottom: 0.125rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-size: 0.75rem;
+  font-size: 0.625rem;
 }
 
 .required-asterisk {
@@ -224,13 +247,13 @@ label {
 
 input, select, textarea {
   width: 100%;
-  padding: 0.875rem 1rem;
+  padding: 0.5rem 0.75rem;
   border-radius: var(--radius-md);
   border: 1px solid var(--card-border);
   background: var(--bg-secondary);
   color: var(--text-primary);
-  margin-bottom: var(--space-md);
-  font-size: 0.9375rem;
+  margin-bottom: var(--space-sm);
+  font-size: 0.8125rem;
   font-family: var(--font-body);
   transition: all var(--transition-base);
 }
@@ -248,19 +271,19 @@ input:focus, select:focus, textarea:focus {
 
 textarea {
   resize: vertical;
-  min-height: 120px;
+  min-height: 80px;
 }
 
 /* Buttons */
 button {
-  padding: 0.875rem 1.75rem;
+  padding: 0.5rem 1rem;
   border-radius: var(--radius-md);
   border: none;
   cursor: pointer;
   font-weight: 600;
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-family: var(--font-body);
-  margin-right: var(--space-sm);
+  margin-right: var(--space-xs);
   transition: all var(--transition-base);
   position: relative;
   overflow: hidden;
@@ -275,6 +298,39 @@ button:last-child {
 .button-content {
   position: relative;
   z-index: 1;
+}
+
+.button-content.loading-hidden {
+  visibility: hidden;
+}
+
+/* Button Loading Spinner */
+.btn-spinner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+}
+
+.btn-spinner svg {
+  width: 100%;
+  height: 100%;
+  animation: btn-spin 0.8s linear infinite;
+}
+
+@keyframes btn-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+button.loading {
+  position: relative;
 }
 
 button:disabled {
@@ -343,21 +399,22 @@ table {
   border-collapse: separate;
   border-spacing: 0;
   background: var(--card-bg);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  margin-top: var(--space-lg);
+  margin-top: var(--space-sm);
   border: 1px solid var(--card-border);
+  font-size: 0.75rem;
 }
 
 th, td {
-  padding: var(--space-md);
+  padding: 0.5rem 0.75rem;
   text-align: left;
   border-bottom: 1px solid var(--card-border);
 }
 
 th {
   background: var(--bg-secondary);
-  font-size: 0.75rem;
+  font-size: 0.625rem;
   color: var(--text-secondary);
   font-weight: 600;
   text-transform: uppercase;
@@ -381,9 +438,9 @@ tbody tr:last-child td {
 
 /* Status Badges */
 .status {
-  padding: 0.375rem 0.875rem;
+  padding: 0.25rem 0.5rem;
   border-radius: 999px;
-  font-size: 0.75rem;
+  font-size: 0.625rem;
   display: inline-flex;
   align-items: center;
   font-weight: 600;

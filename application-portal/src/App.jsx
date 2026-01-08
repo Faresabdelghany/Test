@@ -1,8 +1,10 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Login, Signup } from './components/auth';
-import { UserDashboard } from './components/user';
+import { UserDashboard, ApplicationsPage } from './components/user';
 import { AdminDashboard } from './components/admin';
+import { Layout } from './components/shared';
 import { useAuth } from './hooks/useAuth';
+import { SearchProvider } from './context/SearchContext';
 
 function ProtectedRoute({ children }) {
   const { user, isAdmin } = useAuth();
@@ -32,6 +34,26 @@ function AdminRoute({ children }) {
   return children;
 }
 
+function ProtectedLayout({ children }) {
+  return (
+    <ProtectedRoute>
+      <SearchProvider>
+        <Layout>{children}</Layout>
+      </SearchProvider>
+    </ProtectedRoute>
+  );
+}
+
+function AdminLayout({ children }) {
+  return (
+    <AdminRoute>
+      <SearchProvider>
+        <Layout>{children}</Layout>
+      </SearchProvider>
+    </AdminRoute>
+  );
+}
+
 function App() {
   return (
     <Routes>
@@ -41,17 +63,25 @@ function App() {
       <Route
         path="/dashboard"
         element={
-          <ProtectedRoute>
+          <ProtectedLayout>
             <UserDashboard />
-          </ProtectedRoute>
+          </ProtectedLayout>
+        }
+      />
+      <Route
+        path="/applications"
+        element={
+          <ProtectedLayout>
+            <ApplicationsPage />
+          </ProtectedLayout>
         }
       />
       <Route
         path="/admin"
         element={
-          <AdminRoute>
+          <AdminLayout>
             <AdminDashboard />
-          </AdminRoute>
+          </AdminLayout>
         }
       />
     </Routes>

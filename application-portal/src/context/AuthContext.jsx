@@ -9,19 +9,27 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let mounted = true;
+
     // Check current session on mount
     const initAuth = async () => {
       try {
         const currentUser = await storage.getCurrentUser();
-        if (currentUser) {
+        if (currentUser && mounted) {
           setUser(currentUser);
           const userProfile = await storage.getProfile(currentUser.id);
-          setProfile(userProfile);
+          if (mounted) {
+            setProfile(userProfile);
+          }
         }
       } catch (error) {
-        console.error('Auth init error:', error);
+        if (mounted && error.name !== 'AbortError') {
+          console.error('Auth init error:', error);
+        }
       } finally {
-        setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       }
     };
 
@@ -31,13 +39,19 @@ export function AuthProvider({ children }) {
     const {
       data: { subscription },
     } = storage.onAuthStateChange(async (event, session) => {
+      if (!mounted) return;
+
       if (event === 'SIGNED_IN' && session?.user) {
         setUser(session.user);
         try {
           const userProfile = await storage.getProfile(session.user.id);
-          setProfile(userProfile);
+          if (mounted) {
+            setProfile(userProfile);
+          }
         } catch (error) {
-          console.error('Failed to fetch profile:', error);
+          if (mounted && error.name !== 'AbortError') {
+            console.error('Failed to fetch profile:', error);
+          }
         }
       } else if (event === 'SIGNED_OUT') {
         setUser(null);
@@ -45,7 +59,10 @@ export function AuthProvider({ children }) {
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const login = async (email, password) => {

@@ -7,6 +7,7 @@ export function Input({
   error,
   testId,
   required,
+  icon,
   ...props
 }) {
   return (
@@ -17,7 +18,8 @@ export function Input({
           {required && <span className="required-asterisk"> *</span>}
         </label>
       )}
-      <div className="input-wrapper">
+      <div className={`input-wrapper ${icon ? 'has-icon' : ''}`}>
+        {icon && <span className="input-icon">{icon}</span>}
         <input
           type={type}
           value={value}

@@ -1,0 +1,125 @@
+/* Confirm Dialog Overlay */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+  animation: overlay-fade-in 0.15s ease-out;
+}
+
+@keyframes overlay-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Confirm Dialog */
+.confirm-dialog {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  animation: dialog-scale-in 0.15s ease-out;
+}
+
+@keyframes dialog-scale-in {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.confirm-dialog:focus {
+  outline: none;
+}
+
+/* Confirm Icon */
+.confirm-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirm-icon[data-variant="danger"] {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.confirm-icon[data-variant="warning"] {
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+
+.confirm-icon[data-variant="primary"] {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--accent-primary);
+}
+
+.confirm-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+/* Confirm Title */
+.confirm-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+/* Confirm Message */
+.confirm-message {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+/* Confirm Actions */
+.confirm-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.confirm-actions button {
+  flex: 1;
+  max-width: 140px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 480px) {
+  .confirm-dialog {
+    padding: 20px;
+  }
+
+  .confirm-actions {
+    flex-direction: column-reverse;
+  }
+
+  .confirm-actions button {
+    max-width: none;
+    width: 100%;
+  }
+}
